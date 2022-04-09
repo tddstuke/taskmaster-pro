@@ -150,6 +150,22 @@ $(".card .list-group").sortable({
   },
 });
 
+// Make trash zone droppable
+$("#trash").droppable({
+  accept: ".card .list-group-item",
+  tolerance: "touch",
+  drop: function (event, ui) {
+    ui.draggable.remove();
+    console.log("drop");
+  },
+  over: function (event, ui) {
+    console.log("over");
+  },
+  out: function (event, ui) {
+    console.log("out");
+  },
+});
+
 // save button in modal was clicked
 $("#task-form-modal .btn-primary").click(function () {
   // get form values
