@@ -111,6 +111,45 @@ $(".list-group").on("blur", "input[type='text']", function () {
   $(this).replaceWith(taskSpan);
 });
 
+// make lists sortable
+$(".card .list-group").sortable({
+  connectWith: $(".card .list-group"),
+  scroll: false,
+  tolerance: "pointer",
+  helper: "clone",
+  activte: function (event) {
+    console.log("activate", this);
+  },
+  deactivate: function (event) {
+    console.log("over", event.target);
+  },
+  out: function (event) {
+    console.log("out", event.target);
+  },
+  update: function (event) {
+    // array to store task data in
+    var tempArr = [];
+    // loop over current set of children in sortable list
+    $(this)
+      .children()
+      .each(function () {
+        var text = $(this).find("p").text().trim();
+        var date = $(this).find("span").text().trim();
+        //add task data to the temp array as an object
+        tempArr.push({
+          text: text,
+          date: date,
+        });
+      });
+    // trim down list's ID tomatch object property
+    var arrName = $(this).attr("id").replace("list-", "");
+    // update array on tasks object and save
+    tasks[arrName] = tempArr;
+    saveTasks();
+    console.log(tempArr);
+  },
+});
+
 // save button in modal was clicked
 $("#task-form-modal .btn-primary").click(function () {
   // get form values
